@@ -158,5 +158,56 @@ int getDadosDeTodasEstruturasAuxiliares(int vetorAux[]){
 }
 
 int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[]){
+    int k = 0;
+    int numMaior = 0;
+    int flag = 0;
+    for(int i = 0; i < 10; i++){
+        if(vetorPrincpial[i] != NULL){
+            for(int j = 0; j < qtdElementosNasEstruturas[i]; j++){
+                vetorAux[k] = vetorPrincpial[i][j];
+                k++;
+            }
+            flag = 1;
+        }
+    }
+    for(int i = 0; i < k; i++){
+        for (int j = 0; j < k - 1 - i; j++){
+            if(vetorAux[j] > vetorAux[j+1]){
+                numMaior = vetorAux[j];
+                vetorAux[j] = vetorAux[j+1];
+                vetorAux[j+1] = numMaior;
+            }
+        }
+    }
+    if(k == 0){
+        return TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+    }
+    for(int i = 0; i < k; i++){
+        printf("%d", vetorAux[i]);
+    }
+    return SUCESSO;
+
+}
+
+int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho){
+    if(posicao < 1 || posicao > 10){
+        return POSICAO_INVALIDA;
+    }else if(vetorPrincpial[posicao - 1] == NULL){
+        return SEM_ESTRUTURA_AUXILIAR;
+    }else{
+        if(novoTamanho < 1){
+            return NOVO_TAMANHO_INVALIDO;
+        }
+        int *temp = realloc(vetorPrincpial[posicao - 1], novoTamanho * sizeof(int));
+        if(temp == NULL){
+            return SEM_ESPACO_DE_MEMORIA;
+        }
+        vetorPrincpial[posicao - 1] = temp;
+        if(qtdElementosNasEstruturas[posicao - 1] > novoTamanho){
+            qtdElementosNasEstruturas[posicao - 1] = novoTamanho;
+        }
+        return SUCESSO;
+    }
+
     
 }
